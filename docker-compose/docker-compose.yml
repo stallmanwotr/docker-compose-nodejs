@@ -1,0 +1,43 @@
+#
+# To start once the images have been built:
+#
+#   $ docker images | grep vms
+#   $ docker-compose up
+#
+# Then in a web browser:
+#
+#   http://localhost:5000/hello
+#
+version: "3.7"
+services:
+
+  mongo:
+    image: mongo
+    #container_name: vms_mongo
+    restart: always
+    ports:
+        - "27017:27017"
+    volumes:
+       - ${HOME}/codepen/mongodb-docker/data:/data/db
+
+  nodejs_rest_server:
+    image: vms/nodejs_rest_server
+    #container_name: vms_nodejs_rest_server
+    build:
+        context: ../nodejs-rest-server/
+        args:
+            BUILD_PROXY: ${http_proxy}
+    ports:
+        - "4005:4005"
+    links:
+        - mongo
+    depends_on:
+        - mongo
+
+#  python_rest_server:
+#    image: vms/python_rest_server
+#    container_name: vms_python_rest_server
+#    ports:
+#        - "5000:5000"
+#    depends_on:
+#        - mongo
