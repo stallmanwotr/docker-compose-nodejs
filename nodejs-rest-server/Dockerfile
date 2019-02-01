@@ -15,7 +15,7 @@ RUN npm config set http-proxy $BUILD_PROXY
 RUN npm config set https-proxy $BUILD_PROXY
 RUN npm install
 
-COPY .babelrc ./
+COPY .babelrc .eslintrc .eslintignore ./
 COPY public ./public
 COPY src ./src
 
